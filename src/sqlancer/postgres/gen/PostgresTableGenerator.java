@@ -65,6 +65,35 @@ public class PostgresTableGenerator {
     }
 
     protected SQLQueryAdapter generate() {
+        if (globalState.getDbmsSpecificOptions().simpleTable) {
+            return generateSimple();
+        } else {
+            return generateFull();
+        }
+    }
+
+    private SQLQueryAdapter generateSimple() {
+        columnCanHavePrimaryKey = true;
+        sb.append("CREATE TABLE");
+        if (Randomly.getBoolean()) {
+            sb.append(" IF NOT EXISTS");
+        }
+        sb.append(" ");
+        sb.append(tableName);
+        sb.append("(");
+        for (int i = 0; i < Randomly.smallNumber() + 1; i++) {
+            if (i != 0) {
+                sb.append(", ");
+            }
+            String name = DBMSCommon.createColumnName(i);
+            createSimpleColumn(name);
+        }
+        sb.append(")");
+        sb.append(" ");
+        return new SQLQueryAdapter(sb.toString(), errors, true); // TODO: or should this be false?
+    }
+
+    private SQLQueryAdapter generateFull() {
         columnCanHavePrimaryKey = true;
         sb.append("CREATE");
         if (Randomly.getBoolean()) {
@@ -150,6 +179,16 @@ public class PostgresTableGenerator {
         if (Randomly.getBoolean()) {
             createColumnConstraint(type, serial);
         }
+    }
+
+    private void createSimpleColumn(String name) throws AssertionError {
+        sb.append(name);
+        sb.append(" ");
+        PostgresDataType type = PostgresDataType.getRandomSimpleType();
+        PostgresCommon.appendDataType(type, sb, false, generateOnlyKnown, globalState.getCollates());
+        PostgresColumn c = new PostgresColumn(name, type);
+        c.setTable(table);
+        columnsToBeAdded.add(c);
     }
 
     private void generatePartitionBy() {
