@@ -73,6 +73,41 @@ public class PostgresProvider extends SQLProviderAdapter<PostgresGlobalState, Po
         super(globalClass, optionClass);
     }
 
+    private static boolean test(Action a) {
+        switch (a) {
+            case CLUSTER:
+            case CREATE_STATISTICS:
+            case DISCARD:
+            case COMMIT: // TODO(kwannoel): change to flush.
+            case ALTER_TABLE:
+            case REINDEX:
+            case RESET:
+            case RESET_ROLE:
+            case SET:
+            case ANALYZE:
+            case VACUUM:
+            case SET_CONSTRAINTS:
+            case DROP_STATISTICS:
+            case COMMENT_ON:
+            case NOTIFY:
+            case LISTEN:
+            case UNLISTEN:
+            case CREATE_SEQUENCE:
+                return false;
+
+            case CREATE_INDEX:
+            case DROP_INDEX:
+            case TRUNCATE: // TODO(kwannoel): IS this supported?
+            case CREATE_VIEW:
+            case DELETE:
+            case UPDATE:
+            case INSERT:
+                return true;
+            default:
+                throw new AssertionError(a);
+        }
+    }
+
     public enum Action implements AbstractAction<PostgresGlobalState> {
         ANALYZE(PostgresAnalyzeGenerator::create), //
         ALTER_TABLE(g -> PostgresAlterTableGenerator.create(g.getSchema().getRandomTable(t -> !t.isView()), g,
@@ -311,14 +346,16 @@ public class PostgresProvider extends SQLProviderAdapter<PostgresGlobalState, Po
     }
 
     protected void prepareTables(PostgresGlobalState globalState) throws Exception {
-        StatementExecutor<PostgresGlobalState, Action> se = new StatementExecutor<>(globalState, Action.values(),
+        Action[] actions = Arrays.stream(Action.values()).filter(PostgresProvider::test).toArray(Action[]::new);
+        StatementExecutor<PostgresGlobalState, Action> se = new StatementExecutor<>(globalState, actions,
                 PostgresProvider::mapActions, (q) -> {
                     if (globalState.getSchema().getDatabaseTables().isEmpty()) {
                         throw new IgnoreMeException();
                     }
                 });
         se.executeStatements();
-        globalState.executeStatement(new SQLQueryAdapter("COMMIT", true));
+        // TODO(kwannoel): Flush here instead.
+        // globalState.executeStatement(new SQLQueryAdapter("COMMIT", true));
         globalState.executeStatement(new SQLQueryAdapter("SET SESSION statement_timeout = 5000;\n"));
     }
 
