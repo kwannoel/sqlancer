@@ -221,7 +221,7 @@ public final class PostgresToStringVisitor extends ToStringVisitor<PostgresExpre
             break;
         case TEXT:
             // TODO: append TEXT, CHAR
-            sb.append(Randomly.fromOptions("VARCHAR"));
+            sb.append("VARCHAR"); // Randomly.fromOptions("VARCHAR"));
             break;
         case REAL:
             sb.append("FLOAT");

@@ -96,10 +96,10 @@ public class PostgresProvider extends SQLProviderAdapter<PostgresGlobalState, Po
             case TRUNCATE: // TODO(kwannoel): IS this supported?
             case CREATE_INDEX: // FIXME(kwannoel): make gen logic compat.
             case DROP_INDEX: // FIXME(kwannoel): make gen logic compat.
+            case CREATE_VIEW: // FIXME(kwannoel): make gen logic compat
                 return false;
 
 
-            case CREATE_VIEW:
             case DELETE:
             case UPDATE:
             case INSERT:
