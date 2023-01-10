@@ -34,15 +34,13 @@ public class PostgresSchema extends AbstractSchema<PostgresGlobalState, Postgres
         INT, BOOLEAN, TEXT, DECIMAL, FLOAT, REAL, RANGE, MONEY, BIT, INET;
         public static PostgresDataType getRandomSimpleType() {
             List<PostgresDataType> dataTypes = new ArrayList<>(Arrays.asList(values()));
-            if (PostgresProvider.generateOnlyKnown) {
-                dataTypes.remove(PostgresDataType.DECIMAL);
-                dataTypes.remove(PostgresDataType.FLOAT);
-                dataTypes.remove(PostgresDataType.REAL);
-                dataTypes.remove(PostgresDataType.INET);
-                dataTypes.remove(PostgresDataType.RANGE);
-                dataTypes.remove(PostgresDataType.MONEY);
-                dataTypes.remove(PostgresDataType.BIT);
-            }
+            dataTypes.remove(PostgresDataType.DECIMAL);
+            dataTypes.remove(PostgresDataType.FLOAT);
+            dataTypes.remove(PostgresDataType.REAL);
+            dataTypes.remove(PostgresDataType.INET);
+            dataTypes.remove(PostgresDataType.RANGE);
+            dataTypes.remove(PostgresDataType.MONEY);
+            dataTypes.remove(PostgresDataType.BIT);
             dataTypes.remove(PostgresDataType.TEXT); // NOTE: currently incompat only VARCHAR supported.
             return Randomly.fromList(dataTypes);
         }
