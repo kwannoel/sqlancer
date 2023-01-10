@@ -151,6 +151,7 @@ public class PostgresExpressionGenerator implements ExpressionGenerator<Postgres
         validOptions.remove(BooleanExpression.POSIX_REGEX);
         validOptions.remove(BooleanExpression.BETWEEN);
         validOptions.remove(BooleanExpression.BINARY_RANGE_COMPARISON);
+        validOptions.remove(BooleanExpression.POSTFIX_OPERATOR);
         BooleanExpression option = Randomly.fromList(validOptions);
         switch (option) {
         case POSTFIX_OPERATOR:
