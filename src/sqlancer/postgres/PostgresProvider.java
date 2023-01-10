@@ -93,11 +93,12 @@ public class PostgresProvider extends SQLProviderAdapter<PostgresGlobalState, Po
             case LISTEN:
             case UNLISTEN:
             case CREATE_SEQUENCE:
+            case TRUNCATE: // TODO(kwannoel): IS this supported?
+            case CREATE_INDEX: // FIXME(kwannoel): make gen logic compat.
+            case DROP_INDEX: // FIXME(kwannoel): make gen logic compat.
                 return false;
 
-            case CREATE_INDEX:
-            case DROP_INDEX:
-            case TRUNCATE: // TODO(kwannoel): IS this supported?
+
             case CREATE_VIEW:
             case DELETE:
             case UPDATE:

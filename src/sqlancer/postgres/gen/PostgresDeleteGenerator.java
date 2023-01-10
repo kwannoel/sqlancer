@@ -30,11 +30,11 @@ public final class PostgresDeleteGenerator {
             sb.append(PostgresVisitor.asString(PostgresExpressionGenerator.generateExpression(globalState,
                     table.getColumns(), PostgresDataType.BOOLEAN)));
         }
-        if (Randomly.getBoolean()) {
-            sb.append(" RETURNING ");
-            sb.append(PostgresVisitor
-                    .asString(PostgresExpressionGenerator.generateExpression(globalState, table.getColumns())));
-        }
+//        if (Randomly.getBoolean()) {
+//            sb.append(" RETURNING ");
+//            sb.append(PostgresVisitor
+//                    .asString(PostgresExpressionGenerator.generateExpression(globalState, table.getColumns())));
+//        }
         PostgresCommon.addCommonExpressionErrors(errors);
         errors.add("out of range");
         errors.add("cannot cast");

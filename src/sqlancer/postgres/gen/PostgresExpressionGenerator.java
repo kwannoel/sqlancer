@@ -103,8 +103,8 @@ public class PostgresExpressionGenerator implements ExpressionGenerator<Postgres
     }
 
     private enum BooleanExpression {
-        POSTFIX_OPERATOR, NOT, BINARY_LOGICAL_OPERATOR, BINARY_COMPARISON, FUNCTION, CAST, LIKE, IN_OPERATION,
-        POSIX_REGEX;
+        POSTFIX_OPERATOR, NOT, BINARY_LOGICAL_OPERATOR, BINARY_COMPARISON, FUNCTION, CAST, LIKE, BETWEEN, IN_OPERATION,
+        SIMILAR_TO, POSIX_REGEX, BINARY_RANGE_COMPARISON;
     }
 
     private PostgresExpression generateFunctionWithUnknownResult(int depth, PostgresDataType type) {
@@ -147,11 +147,10 @@ public class PostgresExpressionGenerator implements ExpressionGenerator<Postgres
 
     private PostgresExpression generateBooleanExpression(int depth) {
         List<BooleanExpression> validOptions = new ArrayList<>(Arrays.asList(BooleanExpression.values()));
-        if (PostgresProvider.generateOnlyKnown) {
-            validOptions.remove(BooleanExpression.SIMILAR_TO);
-            validOptions.remove(BooleanExpression.POSIX_REGEX);
-            validOptions.remove(BooleanExpression.BINARY_RANGE_COMPARISON);
-        }
+        validOptions.remove(BooleanExpression.SIMILAR_TO);
+        validOptions.remove(BooleanExpression.POSIX_REGEX);
+        validOptions.remove(BooleanExpression.BETWEEN);
+        validOptions.remove(BooleanExpression.BINARY_RANGE_COMPARISON);
         BooleanExpression option = Randomly.fromList(validOptions);
         switch (option) {
         case POSTFIX_OPERATOR:
