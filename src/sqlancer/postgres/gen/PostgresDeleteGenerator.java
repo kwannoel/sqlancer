@@ -20,9 +20,9 @@ public final class PostgresDeleteGenerator {
         errors.add("violates not-null constraint");
         errors.add("could not determine which collation to use for string comparison");
         StringBuilder sb = new StringBuilder("DELETE FROM");
-        if (Randomly.getBoolean()) {
-            sb.append(" ONLY");
-        }
+//        if (Randomly.getBoolean()) {
+//            sb.append(" ONLY");
+//        }
         sb.append(" ");
         sb.append(table.getName());
         if (Randomly.getBoolean()) {
