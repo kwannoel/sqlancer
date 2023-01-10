@@ -101,6 +101,7 @@ public final class PostgresInsertGenerator {
 
     private static void insertRow(PostgresGlobalState globalState, StringBuilder sb, List<PostgresColumn> columns,
             boolean canBeDefault) {
+        canBeDefault = false;
         sb.append("(");
         for (int i = 0; i < columns.size(); i++) {
             if (i != 0) {
