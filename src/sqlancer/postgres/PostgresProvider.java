@@ -357,7 +357,7 @@ public class PostgresProvider extends SQLProviderAdapter<PostgresGlobalState, Po
         se.executeStatements();
         // TODO(kwannoel): Flush here instead.
         // globalState.executeStatement(new SQLQueryAdapter("COMMIT", true));
-        globalState.executeStatement(new SQLQueryAdapter("SET SESSION statement_timeout = 5000;\n"));
+        // globalState.executeStatement(new SQLQueryAdapter("SET SESSION statement_timeout = 5000;\n"));
     }
 
     private String getCreateDatabaseCommand(PostgresGlobalState state) {
