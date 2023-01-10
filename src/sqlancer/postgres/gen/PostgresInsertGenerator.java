@@ -41,12 +41,12 @@ public final class PostgresInsertGenerator {
         sb.append("(");
         sb.append(columns.stream().map(c -> c.getName()).collect(Collectors.joining(", ")));
         sb.append(")");
-        if (Randomly.getBooleanWithRatherLowProbability()) {
-            sb.append(" OVERRIDING");
-            sb.append(" ");
-            sb.append(Randomly.fromOptions("SYSTEM", "USER"));
-            sb.append(" VALUE");
-        }
+//        if (Randomly.getBooleanWithRatherLowProbability()) {
+//            sb.append(" OVERRIDING");
+//            sb.append(" ");
+//            sb.append(Randomly.fromOptions("SYSTEM", "USER"));
+//            sb.append(" VALUE");
+//        }
         sb.append(" VALUES");
 
         if (globalState.getDbmsSpecificOptions().allowBulkInsert && Randomly.getBooleanWithSmallProbability()) {
