@@ -429,7 +429,9 @@ public class PostgresExpressionGenerator implements ExpressionGenerator<Postgres
 
     private PostgresExpression generateIntExpression(int depth) {
         IntExpression option;
-        option = Randomly.fromOptions(IntExpression.values());
+        List<IntExpression> validOptions = new ArrayList<>(Arrays.asList(IntExpression.values()));
+        validOptions.remove(IntExpression.UNARY_OPERATION);
+        option = Randomly.fromList(validOptions);
         switch (option) {
         case CAST:
             return new PostgresCastOperation(generateExpression(depth + 1), getCompoundDataType(PostgresDataType.INT));
